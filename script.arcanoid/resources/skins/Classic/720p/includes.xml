@@ -1,0 +1,4 @@
+<includes>
+  <!-- FAKE INCLUDES.XML: Seulement pour eviter un "load error" dans le output d'XBMC -->
+  <!-- NOTE: Meme avec sans ce XML, cela empeche pas le fonctionnemet de WindowXML -->
+</includes>

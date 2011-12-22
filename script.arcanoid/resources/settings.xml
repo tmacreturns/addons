@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <setting type="lsep" label="480" />
+  <setting id="skin" type="fileenum" mask="/" values="resources\skins\" label="166" default="Classic" />
+  <setting id="custom_bg" type="pictures" source="pictures" label="$LOCALIZE[33070]:" default="" />
+
+  <setting type="lsep" label="In Game" />
+  <setting id="bg_ingame" type="enum" lvalues="13278|20190|16018" label="33068" default="0" />
+  <setting enable="eq(-1,1)" id="custom_bg_ingame" type="pictures" source="pictures" label=" - $LOCALIZE[15311]" default="" />
+  <setting type="sep" />
+  <setting id="mouse_zone" type="bool" label="Display area of the mouse around the ship" default="false" />
+  <setting type="lsep" label="$LOCALIZE[439]/$LOCALIZE[10004]" />
+  <setting type="action" option="close" label="Clean cache and settings ..." default="RunScript($CWD/resources/libs/cleaner.py)" />
+</settings>

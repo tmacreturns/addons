@@ -1,0 +1,660 @@
+<window id="3001">
+	<!-- WARNING: All controls with an id's is required -->
+	<defaultcontrol>10000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<controls>
+		<control type="group">
+			<description>backgrounds images</description>
+			<control type="largeimage">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture>arkanoid-background.jpg</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">wall_shadow.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>30r</posy>
+				<width>1280</width>
+				<height>30</height>
+				<texture>arkanoid-floor.png</texture>
+				<animation effect="fade" end="90" condition="true">conditional</animation>
+			</control>
+		</control>
+
+		<control type="panel" id="350">
+			<description>level background images</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<posx>328</posx>
+			<posy>24</posy>
+			<width>624</width>
+			<height>717</height>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout width="78" height="78">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>78</width>
+					<height>78</height>
+					<texture>$INFO[ListItem(0).Icon]</texture>
+					<aspectratio>stretch</aspectratio>
+				</control>
+			</itemlayout>
+			<focusedlayout width="78" height="78" />
+		</control>
+
+		<control type="group">
+			<control type="image">
+				<description>shadow image</description>
+				<posx>328</posx>
+				<posy>21</posy>
+				<width>624</width>
+				<height>24</height>
+				<texture>border_top_shadow.png</texture>
+			</control>
+			<control type="image">
+				<description>shadow image</description>
+				<posx>328</posx>
+				<posy>0</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture>border_shadow.png</texture>
+			</control>
+			<control type="image">
+				<description>border top image (used for limit top)</description>
+				<posx>328</posx>
+				<posy>0</posy>
+				<width>624</width>
+				<height>24</height>
+				<texture>border_top.png</texture>
+			</control>
+			<control type="image">
+				<description>border right image</description>
+				<posx>304</posx>
+				<posy>3</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture>border.png</texture>
+			</control>
+			<control type="image">
+				<description>border left image (used for limit left)</description>
+				<posx>952</posx>
+				<posy>3</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture flipx="true">border.png</texture>
+			</control>
+		</control>
+
+		<control type="panel" id="250">
+			<description>walls images</description>
+			<posx>328</posx>
+			<posy>24</posy>
+			<width>624</width>
+			<height>480</height>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout width="48" height="24">
+				<control type="image">
+					<posx>24</posx>
+					<posy>24</posy>
+					<width>48</width>
+					<height>24</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>wall_shadow.png</texture>
+					<visible>!stringcompare(ListItem.Icon,)</visible>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>24</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+			</itemlayout>
+			<focusedlayout width="48" height="24">
+				<control type="image">
+					<posx>24</posx>
+					<posy>24</posy>
+					<width>48</width>
+					<height>24</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>wall_shadow.png</texture>
+					<visible>!stringcompare(ListItem.Icon,)</visible>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>24</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+				</control>
+			</focusedlayout>
+		</control>
+
+		<control type="panel" id="50">
+			<description>level background images</description>
+			<posx>328</posx>
+			<posy>24</posy>
+			<width>624</width>
+			<height>480</height>
+			<pagecontrol>-</pagecontrol>
+			<onleft>10000</onleft>
+			<onright>10000</onright>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<itemlayout width="48" height="24" />
+			<focusedlayout width="48" height="24">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>48</width>
+					<height>24</height>
+					<aspectratio>stretch</aspectratio>
+					<texture fallback="wall_shadow.png">$INFO[ListItem(0).Icon]</texture>
+					<bordertexture border="2">arkanoid-folder-focus.png</bordertexture>
+					<bordersize>2</bordersize>
+				</control>
+			</focusedlayout>
+		</control>
+
+		<control type="group" id="10000">
+			<control type="list" id="150">
+				<description>vaus player images</description>
+				<posx>26</posx>
+				<posy>50</posy>
+				<width>270</width>
+				<height>355</height>
+				<pagecontrol>-</pagecontrol>
+				<onleft>9000</onleft>
+				<onright>50</onright>
+				<onup>SetFocus(450,5)</onup>
+				<ondown>SetFocus(450,0)</ondown>
+				<itemlayout width="270" height="32">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>64</width>
+						<height>32</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>32</height>
+						<font>font12caps</font>
+						<textcolor>88FFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout width="270" height="32">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>270</width>
+						<height>32</height>
+						<texture>arkanoid-MenuItemFO.png</texture>
+						<visible>Control.HasFocus(150)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>64</width>
+						<height>32</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>32</height>
+						<font>font12caps</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.HasFocus(150)</visible>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>32</height>
+						<font>font12caps</font>
+						<textcolor>88FFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.HasFocus(150)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="image">
+				<description>separator image</description>
+				<posx>26</posx>
+				<posy>405</posy>
+				<width>270</width>
+				<height>5</height>
+				<texture>arkanoid-separator.png</texture>
+			</control>
+
+			<control type="list" id="450">
+				<description>vaus player images</description>
+				<posx>26</posx>
+				<posy>415</posy>
+				<width>270</width>
+				<height>266</height>
+				<pagecontrol>-</pagecontrol>
+				<onleft>9000</onleft>
+				<onright>50</onright>
+				<onup>SetFocus(150,10)</onup>
+				<ondown>SetFocus(150,0)</ondown>
+				<itemlayout width="270" height="44">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>44</width>
+						<height>44</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>44</height>
+						<font>font12caps</font>
+						<textcolor>88FFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout width="270" height="44">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>270</width>
+						<height>44</height>
+						<texture>arkanoid-MenuItemFO.png</texture>
+						<visible>Control.HasFocus(450)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>44</width>
+						<height>44</height>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>44</height>
+						<font>font12caps</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.HasFocus(450)</visible>
+					</control>
+					<control type="label">
+						<posx>270</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>44</height>
+						<font>font12caps</font>
+						<textcolor>88FFFFFF</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.HasFocus(450)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+
+		<control type="grouplist" id="5000">
+			<posx>976</posx>
+			<posy>0</posy>
+			<width>280</width>
+			<height>720</height>
+			<onleft>9000</onleft>
+			<onright>9000</onright>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<itemgap>0</itemgap>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>128</height>
+				<texture>arkanoid-logo.png</texture>
+				<aspectratio aligny="bottom">keep</aspectratio>
+			</control>
+			<control type="image">
+				<description>LOGO Mirror</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>128</height>
+				<aspectratio aligny="top">keep</aspectratio>
+				<texture diffuse="arkanoid-diffuse_mirror.png" flipy="true">arkanoid-logo.png</texture>
+			</control>
+			<control type="label">
+				<description>high score label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>80</height>
+				<font>font28_title</font>
+				<label>[B][COLOR=FFFF0000]STAGE NAME[/COLOR][CR]$INFO[Container.Property(editor.level.name)][/B]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>99FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>high score label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>50</height>
+				<font>font28_title</font>
+				<label>[B][COLOR=FF0084ff]WALL[/COLOR][/B]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>99FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="image">
+				<description>current wall/brick</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>64</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="wall_shadow.png">$INFO[Container(50).ListItem(0).Icon]</texture>
+				<bordertexture border="5">arkanoid-folder-focus.png</bordertexture>
+				<bordersize>5</bordersize>
+			</control>
+			<control type="label">
+				<description>high score label</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>50</height>
+				<font>font28_title</font>
+				<label>[B][COLOR=FF0084ff]BACKGROUND[/COLOR][/B]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>99FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="image">
+				<description>current bg level</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>280</width>
+				<height>128</height>
+				<aspectratio>keep</aspectratio>
+				<texture fallback="wall_shadow.png">$INFO[Container(350).ListItem(0).Icon]</texture>
+				<bordertexture border="5">arkanoid-folder-focus.png</bordertexture>
+				<bordersize>5</bordersize>
+			</control>
+		</control>
+
+		<control type="button" id="101">
+			<description>dummy button</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>2</width>
+			<height>2</height>
+			<label>-</label>
+			<texturenofocus>-</texturenofocus>
+			<texturefocus>-</texturefocus>
+		</control>
+
+		<control type="group">
+			<animation effect="slide" start="0,0" end="280,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus | Control.HasFocus(8999)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-280,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="button" id="8999">
+				<description>Fake button for mouse control</description>
+				<posx>-280</posx>
+				<posy>0</posy>
+				<width>265</width>
+				<height>720</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<posx>-820</posx>
+				<posy>0</posy>
+				<width>846</width>
+				<height>720</height>
+				<texture>arkanoid-HomeBlade.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>-260</posx>
+				<posy>50</posy>
+				<width>250</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>arkanoid-logo2.png</texture>
+			</control>
+
+			<control type="group" id="9000">
+				<posx>-280</posx>
+				<posy>130</posy>
+				<control type="button" id="121">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Set Stage Name</label>
+					<onleft>10000</onleft>
+					<onright>10000</onright>
+					<onup>124</onup>
+					<ondown>125</ondown>
+				</control>
+				<control type="button" id="125">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Arkanoid Stages</label>
+					<onleft>10000</onleft>
+					<onright>10000</onright>
+					<onup>121</onup>
+					<ondown>122</ondown>
+				</control>
+				<control type="button" id="122">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>80</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Custom Stages</label>
+					<onleft>10000</onleft>
+					<onright>10000</onright>
+					<onup>125</onup>
+					<ondown>123</ondown>
+				</control>
+				<control type="button" id="123">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>120</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Save Stage</label>
+					<onleft>10000</onleft>
+					<onright>10000</onright>
+					<onup>122</onup>
+					<ondown>124</ondown>
+				</control>
+				<control type="button" id="124">
+					<description>reset button</description>
+					<posx>0</posx>
+					<posy>160</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Reset Stage</label>
+					<onleft>10000</onleft>
+					<onright>10000</onright>
+					<onup>123</onup>
+					<ondown>121</ondown>
+				</control>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>190</width>
+				<height>35</height>
+				<texture border="0,0,32,0">arkanoid-header.png</texture>
+			</control>
+			<control type="label">
+				<posx>160</posx>
+				<posy>0</posy>
+				<width>1000</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>Level Editor</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>20</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-270,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-270,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>80</width>
+				<height>35</height>
+				<texture border="0,0,32,0">arkanoid-header.png</texture>
+			</control>
+			<control type="button" id="320">
+				<hitrect x="0" y="0" w="60" h="30" />
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>25</width>
+				<height>20</height>
+				<texturenofocus>arkanoid-HomeIcon.png</texturenofocus>
+				<texturefocus>arkanoid-HomeIcon-Focus.png</texturefocus>
+				<label>-</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>160r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">arkanoid-header.png</texture>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<control type="image">
+				<posx>26r</posx>
+				<posy>0</posy>
+				<width>846</width>
+				<height>720</height>
+				<texture flipx="true">arkanoid-HomeBlade.png</texture>
+			</control>
+		</control>
+	</controls>
+</window>

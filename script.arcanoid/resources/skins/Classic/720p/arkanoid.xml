@@ -1,0 +1,940 @@
+<window id="3000">
+	<!-- WARNING: All controls with an id's is required -->
+	<defaultcontrol>9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+
+	<animation effect="fade" time="200">WindowOpen</animation>
+	<animation effect="fade" time="200">WindowClose</animation>
+
+	<controls>
+		<control type="button" id="2000">
+			<description>dummy button</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1</width>
+			<height>1</height>
+			<label>-</label>
+			<texturenofocus>-</texturenofocus>
+			<texturefocus>-</texturefocus>
+			<visible>false</visible>
+		</control>
+		<control type="fixedlist" id="50">
+			<description>containers</description>
+			<hitrect x="0" y="0" w="0" h="0" />
+			<visible>false</visible>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1</width>
+			<height>1</height>
+			<pagecontrol>-</pagecontrol>
+			<itemlayout width="1" height="1" />
+			<focusedlayout width="1" height="1" />
+		</control>
+
+		<control type="group">
+			<description>backgrounds images</description>
+			<control type="largeimage">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture>arkanoid-background.jpg</texture>
+				<visible>IsEmpty(Container.Property(custom_bg))</visible>
+				<animation effect="fade" time="250">VisibleChange</animation>
+			</control>
+			<control type="largeimage">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture>$INFO[Container.Property(custom_bg)]</texture>
+				<visible>!IsEmpty(Container.Property(custom_bg))</visible>
+				<animation effect="fade" time="250">VisibleChange</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">wall_shadow.png</texture>
+				<animation effect="fade" start="100" end="25" condition="!IsEmpty(Container.Property(custom_bg))">conditional</animation>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>30r</posy>
+				<width>1280</width>
+				<height>30</height>
+				<texture>arkanoid-floor.png</texture>
+				<animation effect="fade" end="90" condition="true">conditional</animation>
+			</control>
+		</control>
+
+		<control type="group">
+			<description>Game section</description>
+			<control type="multiimage">
+				<description>intro start game images</description>
+				<posx>328</posx>
+				<posy>24</posy>
+				<width>624</width>
+				<height>717</height>
+				<imagepath>intro</imagepath>
+				<timeperimage>300</timeperimage>
+				<randomize>false</randomize>
+				<fadetime>0</fadetime>
+				<loop>false</loop>
+				<visible>!IsEmpty(Container.Property(Intro))</visible>
+			</control>
+			<control type="label">
+				<description>intro start game label</description>
+				<posx>350</posx>
+				<posy>50</posy>
+				<width>624</width>
+				<height>717</height>
+				<font>font24_title</font>
+				<label>$INFO[Container.Property(Intro)]</label>
+				<textcolor>99FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="multiimage">
+				<posx>390</posx>
+				<posy>360</posy>
+				<width>500</width>
+				<height>360</height>
+				<aspectratio>keep</aspectratio>
+				<imagepath>mothership</imagepath>
+				<timeperimage>30</timeperimage>
+				<randomize>false</randomize>
+				<fadetime>0</fadetime>
+				<visible>[IsEmpty(Container.Property(Intro)) + IsEmpty(Container.Property(level.background))]</visible>
+				<animation effect="fade" time="400">Visible</animation>
+			</control>
+			<control type="image" id="1000">
+				<description>level background image (used for gameplay size of Rect(?,?,?,?))</description>
+				<posx>328</posx>
+				<posy>24</posy>
+				<width>624</width>
+				<height>717</height>
+				<texture>$INFO[Container.Property(level.background)]</texture>
+				<visible>stringcompare(Container.Property(bg_ingame),0)</visible>
+			</control>
+			<control type="image">
+				<description>custom background image</description>
+				<posx>328</posx>
+				<posy>24</posy>
+				<width>624</width>
+				<height>717</height>
+				<texture>$INFO[Container.Property(custom_bg_ingame)]</texture>
+				<visible>stringcompare(Container.Property(bg_ingame),1) + !IsEmpty(Container.Property(level.background))</visible>
+			</control>
+			<control type="label" id="1001">
+				<description>Ready label</description>
+				<posx>328</posx>
+				<posy>360</posy>
+				<width>624</width>
+				<height>360</height>
+				<font>font24_title</font>
+				<label>[B]ROUND $INFO[Container.Property(level.level)][CR][CR]READY[/B]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>99FFFFFF</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+			</control>
+			<control type="label">
+				<description>Game Over label</description>
+				<posx>328</posx>
+				<posy>360</posy>
+				<width>624</width>
+				<height>360</height>
+				<font>font28_title</font>
+				<label>[B]$INFO[Container.Property(GameOver)][/B]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>FFFF0000</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<animation effect="zoom" center="auto" end="150" time="400" condition="!IsEmpty(Container.Property(GameOver))">Conditional</animation>
+			</control>
+
+			<control type="image">
+				<description>shadow top image</description>
+				<posx>328</posx>
+				<posy>21</posy>
+				<width>624</width>
+				<height>24</height>
+				<texture>border_top_shadow.png</texture>
+			</control>
+			<control type="image">
+				<description>shadow image</description>
+				<posx>328</posx>
+				<posy>0</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture>border_shadow.png</texture>
+			</control>
+			<control type="image">
+				<description>border top image</description>
+				<posx>328</posx>
+				<posy>0</posy>
+				<width>624</width>
+				<height>24</height>
+				<texture>border_top.png</texture>
+			</control>
+			<control type="image">
+				<description>border right image</description>
+				<posx>304</posx>
+				<posy>3</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture>border.png</texture>
+			</control>
+			<control type="image">
+				<description>border left image</description>
+				<posx>952</posx>
+				<posy>3</posy>
+				<width>24</width>
+				<height>717</height>
+				<texture flipx="true">border.png</texture>
+			</control>
+
+			<control type="group">
+				<visible>false</visible>
+				<control type="image" id="103">
+					<description>Warp Escape image (used for next level bonus, if vaus.control.right >= escape posx)</description>
+					<posx>952</posx>
+					<posy>630</posy>
+					<width>24</width>
+					<height>63</height>
+					<texture>WarpEscape.gif</texture>
+					<animation effect="zoom" start="0,654,24,24" time="1000" condition="Control.IsVisible(103)">conditional</animation>
+				</control>
+				<control type="image" id="104">
+					<description>door 1 top image</description>
+					<posx>442</posx>
+					<posy>4</posy>
+					<width>63</width>
+					<height>21</height>
+					<texture>wall_shadow.png</texture>
+					<animation type="WindowOpen" reversible="false">
+						<effect type="zoom" start="442,12,63,1" time="1000" />
+						<effect type="zoom" end="442,12,63,0" time="1000" delay="3000" />
+					</animation>
+				</control>
+				<control type="image" id="105">
+					<description>door 2 top image</description>
+					<posx>778</posx>
+					<posy>4</posy>
+					<width>63</width>
+					<height>21</height>
+					<texture>wall_shadow.png</texture>
+					<animation type="WindowOpen" reversible="false">
+						<effect type="zoom" start="442,12,63,1" time="1000" />
+						<effect type="zoom" end="442,12,63,0" time="1000" delay="3000" />
+					</animation>
+				</control>
+				<control type="image" id="106">
+					<description>enemie image (pyramid.gif/sphere.gif/cubes.gif/boom.gif)</description>
+					<posx>449</posx>
+					<posy>24</posy>
+					<width>49</width>
+					<height>49</height>
+					<texture>cubes.gif</texture>
+					<animation effect="zoom" start="449,10,49,2" time="1000" delay="1200" tween="quadratic" easing="out">WindowOpen</animation>
+				</control>
+				<control type="image" id="107">
+					<description>enemie image (pyramid.gif/sphere.gif/cubes.gif/boom.gif)</description>
+					<posx>785</posx>
+					<posy>24</posy>
+					<width>49</width>
+					<height>49</height>
+					<texture>sphere.gif</texture>
+					<animation effect="zoom" start="785,10,49,2" time="1000" delay="1200" tween="quadratic" easing="out">WindowOpen</animation>
+				</control>
+			</control>
+
+			<control type="image" id="100">
+				<description>bonus/wall image (used for custom displaying and wall collide, only size required)</description>
+				<posx>328</posx>
+				<posy>24</posy>
+				<width>48</width>
+				<height>24</height>
+				<texture>-</texture>
+				<visible>false</visible>
+			</control>
+
+			<control type="panel" id="250">
+				<description>container walls images</description>
+				<posx>328</posx>
+				<posy>24</posy>
+				<width>624</width>
+				<height>480</height>
+				<pagecontrol>-</pagecontrol>
+				<itemlayout width="48" height="24">
+					<control type="image">
+						<posx>24</posx>
+						<posy>24</posy>
+						<width>48</width>
+						<height>24</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>wall_shadow.png</texture>
+						<visible>![substring(ListItem.Icon,.gif) | stringcompare(ListItem.Icon,)]</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>48</width>
+						<height>24</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout width="48" height="24">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>48</width>
+						<height>24</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>$INFO[ListItem.Icon]</texture>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="list" id="500">
+				<description>vaus control ( for normal vaus, listsize = 26 )</description>
+				<posx>328</posx>
+				<posy>600</posy>
+				<width>750</width>
+				<height>120</height>
+				<pagecontrol>-</pagecontrol>
+				<orientation>horizontal</orientation>
+				<scrolltime>100</scrolltime>
+				<onleft>1</onleft>
+				<onright>1</onright>
+				<onup>500</onup>
+				<ondown>500</ondown>
+				<itemlayout width="24" height="120">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>24</width>
+						<height>120</height>
+						<texture>arkanoid-folder-focus.png</texture>
+						<bordersize>1</bordersize>
+						<visible>!IsEmpty(Container.Property(mouse_zone))</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout width="24" height="120">
+					<control type="image">
+						<description>ball image (visible before launching ball only)</description>
+						<posx>12</posx>
+						<posy>37</posy>
+						<width>12</width>
+						<height>12</height>
+						<texture>Ball.gif</texture>
+						<animation effect="slide" end="18,0" condition="stringcompare(Container(500).Position,1)">conditional</animation>
+						<animation effect="slide" end="36,0" condition="stringcompare(Container(500).Position,0)">conditional</animation>
+						<animation effect="slide" end="-18,0" condition="stringcompare(Container(500).Position,24)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="stringcompare(Container(500).Position,25)">conditional</animation>
+						<animation effect="slide" end="-34,0" time="500" tween="back" easing="inout" condition="Container(500).OnNext">conditional</animation>
+						<animation effect="slide" end="34,0" time="500" tween="back" easing="inout" condition="Container(500).OnPrevious">conditional</animation>
+						<visible>IsEmpty(Container.Property(level.ballRunning))</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>144</width>
+						<height>22</height>
+						<texture>Vaus_big.gif</texture>
+						<animation effect="slide" end="40,0" condition="stringcompare(Container(500).Position,1)">conditional</animation>
+						<animation effect="slide" end="20,0" condition="stringcompare(Container(500).Position,2)">conditional</animation>
+						<animation effect="slide" end="-60,0" condition="!stringcompare(Container(500).Position,0)">conditional</animation>
+						<animation effect="slide" end="-20,0" condition="stringcompare(Container(500).Position,23)">conditional</animation>
+						<animation effect="slide" end="-40,0" condition="stringcompare(Container(500).Position,24)">conditional</animation>
+						<animation effect="slide" end="-60,0" condition="stringcompare(Container(500).Position,25)">conditional</animation>
+						<visible>stringcompare(Container.Property(vaus.statut),BIG)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>96</width>
+						<height>22</height>
+						<texture>Vaus_Lasers.gif</texture>
+						<animation effect="slide" end="18,0" condition="stringcompare(Container(500).Position,1)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="!stringcompare(Container(500).Position,0)">conditional</animation>
+						<animation effect="slide" end="-18,0" condition="stringcompare(Container(500).Position,24)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="stringcompare(Container(500).Position,25)">conditional</animation>
+						<visible>stringcompare(Container.Property(vaus.statut),LASER)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>96</width>
+						<height>22</height>
+						<texture>Vaus.gif</texture>
+						<animation effect="slide" end="18,0" condition="stringcompare(Container(500).Position,1)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="!stringcompare(Container(500).Position,0)">conditional</animation>
+						<animation effect="slide" end="-18,0" condition="stringcompare(Container(500).Position,24)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="stringcompare(Container(500).Position,25)">conditional</animation>
+						<visible>stringcompare(Container.Property(vaus.statut),NORMAL)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>96</width>
+						<height>22</height>
+						<texture>boom.gif</texture>
+						<animation effect="slide" end="18,0" condition="stringcompare(Container(500).Position,1)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="!stringcompare(Container(500).Position,0)">conditional</animation>
+						<animation effect="slide" end="-18,0" condition="stringcompare(Container(500).Position,24)">conditional</animation>
+						<animation effect="slide" end="-36,0" condition="stringcompare(Container(500).Position,25)">conditional</animation>
+						<visible>stringcompare(Container.Property(vaus.statut),BOOM)</visible>
+						<animation effect="zoom" time="1000" center="auto" end="200">Visible</animation>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="list" id="150">
+				<description>vaus player images</description>
+				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>328</posx>
+				<posy>700</posy>
+				<width>250</width>
+				<height>15</height>
+				<pagecontrol>-</pagecontrol>
+				<orientation>horizontal</orientation>
+				<itemlayout width="50" height="15">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>48</width>
+						<height>15</height>
+						<texture>Vaus_Player.png</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout width="50" height="15">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>48</width>
+						<height>15</height>
+						<texture>Vaus_Player.png</texture>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="group">
+				<description>used for keeping defaults Rect(?,?,?,?)</description>
+				<control type="image" id="111">
+					<description>ball image (Ball.gif)</description>
+					<posx>647</posx>
+					<posy>637</posy>
+					<width>12</width>
+					<height>12</height>
+					<texture>Ball.gif</texture>
+					<visible>!IsEmpty(Container.Property(level.ballRunning))</visible>
+					<visible>false</visible>
+				</control>
+				<control type="image" id="112">
+					<description>Vaus Fire Laser image (VausFireLaser.png)</description>
+					<posx>592</posx>
+					<posy>626</posy>
+					<width>96</width>
+					<height>22</height>
+					<texture>-</texture>
+					<visible>false</visible>
+				</control>
+				<control type="image" id="110">
+					<description>Vaus Spacecraf image (Vaus.gif/Vaus_Lasers.gif)</description>
+					<posx>604</posx>
+					<posy>650</posy>
+					<width>96</width>
+					<height>22</height>
+					<texture>-</texture>
+					<visible>false</visible>
+				</control>
+				<control type="image" id="109">
+					<description>Vaus Spacecraf image (Vaus_big.gif)</description>
+					<posx>592</posx>
+					<posy>650</posy>
+					<width>144</width>
+					<height>22</height>
+					<texture>-</texture>
+					<visible>false</visible>
+				</control>
+			</control>
+
+			<control type="group">
+				<animation effect="slide" end="-476,150" time="400" condition="[IsEmpty(Container.Property(Intro)) + IsEmpty(Container.Property(level.background))]">Conditional</animation>
+				<animation effect="zoom" center="auto" end="150" time="400" condition="[IsEmpty(Container.Property(Intro)) + IsEmpty(Container.Property(level.background))]">Conditional</animation>
+				<posx>976</posx>
+				<posy>50</posy>
+				<control type="image">
+					<description>LOGO</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>280</width>
+					<height>128</height>
+					<texture>arkanoid-logo.png</texture>
+					<aspectratio aligny="bottom">keep</aspectratio>
+				</control>
+				<control type="image">
+					<description>LOGO Mirror</description>
+					<posx>0</posx>
+					<posy>128</posy>
+					<width>280</width>
+					<height>128</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<texture diffuse="arkanoid-diffuse_mirror.png" flipy="true">arkanoid-logo.png</texture>
+				</control>
+				<control type="label">
+					<description>high score label</description>
+					<posx>0</posx>
+					<posy>256</posy>
+					<width>280</width>
+					<height>100</height>
+					<font>font28_title</font>
+					<label>$INFO[Container.Property(score.highscore),[B][COLOR=FFFF0000]HIGH SCORE[/COLOR][CR],[/B]]</label>
+					<align>center</align>
+					<textcolor>99FFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+					<animation effect="slide" end="0,-100" time="400" condition="[IsEmpty(Container.Property(Intro)) + IsEmpty(Container.Property(level.background))]">Conditional</animation>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>976</posx>
+				<posy>406</posy>
+				<control type="label">
+					<description>player score label</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>280</width>
+					<height>100</height>
+					<font>font28_title</font>
+					<label>$INFO[Container.Property(score.player),[B][COLOR=FF0084ff]SCORE[/COLOR][CR],[/B]]</label>
+					<align>center</align>
+					<textcolor>99FFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+				</control>
+				<control type="label">
+					<description>round label</description>
+					<posx>0</posx>
+					<posy>100</posy>
+					<width>280</width>
+					<height>100</height>
+					<font>font28_title</font>
+					<label>$INFO[Container.Property(level.level),[B][COLOR=FF0084ff]ROUND[/COLOR][CR],[/B]]</label>
+					<align>center</align>
+					<textcolor>99FFFFFF</textcolor>
+					<shadowcolor>FF000000</shadowcolor>
+				</control>
+			</control>
+		</control>
+
+		<control type="group">
+			<visible>!IsEmpty(Container.Property(game.paused))</visible>
+			<animation effect="fade" time="500">Visible</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">wall_shadow.png</texture>
+			</control>
+			<control type="image">
+				<posx>460</posx>
+				<posy>24</posy>
+				<width>360</width>
+				<height>717</height>
+				<aspectratio>keep</aspectratio>
+				<texture>paused.png</texture>
+			</control>
+		</control>
+
+		<control type="image">
+			<posx>-820</posx>
+			<posy>0</posy>
+			<width>846</width>
+			<height>720</height>
+			<texture>arkanoid-HomeBlade.png</texture>
+			<visible>![ControlGroup(10000).HasFocus + ControlGroup(10000).IsVisible]</visible>
+		</control>
+		<control type="image">
+			<posx>26r</posx>
+			<posy>0</posy>
+			<width>846</width>
+			<height>720</height>
+			<texture flipx="true">arkanoid-HomeBlade.png</texture>
+		</control>
+		<control type="group" id="10000">
+			<animation effect="slide" start="0,0" end="280,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus | Control.HasFocus(8999)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-280,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="group">
+				<animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>720</height>
+					<texture>arkanoid-MediaBladeSub_Part1.png</texture>
+					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>1</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>arkanoid-MediaBladeSub_Part2.png</texture>
+					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+			</control>
+			<control type="group" id="9001">
+				<posx>-220</posx>
+				<posy>0</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(121)">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(121) | ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(121) | ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(121) | ControlGroup(9001).HasFocus">conditional</animation>
+				<control type="button">
+					<description>Fake button for mouse control</description>
+					<posx>-15</posx>
+					<posy>0</posy>
+					<width>245</width>
+					<height>720</height>
+					<label>-</label>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<visible>true</visible>
+				</control>
+				<control type="grouplist" id="9002">
+					<posx>10</posx>
+					<posy>85</posy>
+					<width>240</width>
+					<height>550</height>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>9002</onup>
+					<ondown>9002</ondown>
+					<itemgap>0</itemgap>
+					<control type="label" id="200">
+						<width>220</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>MODE</label>
+						<textcolor>DDced8da</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="button" id="201">
+						<description>classic mode</description>
+						<height>40</height>
+						<width>221</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>195</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Classic</label>
+					</control>
+					<control type="button" id="202">
+						<description>tournament mode</description>
+						<height>40</height>
+						<width>221</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>195</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Tournament</label>
+					</control>
+					<control type="button" id="203">
+						<description>custom stage</description>
+						<height>40</height>
+						<width>221</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>195</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Custom Stage</label>
+					</control>
+					<control type="button" id="204">
+						<description>practice any stage of classic/tounament mode</description>
+						<height>40</height>
+						<width>221</width>
+						<textoffsetx>20</textoffsetx>
+						<textwidth>195</textwidth>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+						<texturenofocus border="5">arkanoid-button-nofocus.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<label>Practice</label>
+					</control>
+				</control>
+			</control>
+			<control type="button" id="8999">
+				<description>Fake button for mouse control</description>
+				<posx>-280</posx>
+				<posy>0</posy>
+				<width>270</width>
+				<height>720</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<posx>-820</posx>
+				<posy>0</posy>
+				<width>846</width>
+				<height>720</height>
+				<texture>arkanoid-HomeBlade.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>-260</posx>
+				<posy>50</posy>
+				<width>250</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>arkanoid-logo2.png</texture>
+			</control>
+
+			<control type="group" id="9000">
+				<posx>-280</posx>
+				<posy>130</posy>
+				<control type="button" id="123">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Reset Game</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>127</onup>
+					<ondown>121</ondown>
+                    <visible>!IsEmpty(Container.Property(game.paused))</visible>
+                    <onclick>SetFocus(125)</onclick>
+				</control>
+				<control type="radiobutton" id="121">
+					<description>Play mode button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<radioposx>252</radioposx>
+					<radioposy>12</radioposy>
+					<radiowidth>18</radiowidth>
+					<radioheight>18</radioheight>
+					<textureradioon>arkanoid-HomeHasSub.png</textureradioon>
+					<textureradiooff>arkanoid-HomeHasSub.png</textureradiooff>
+					<label>Play Game</label>
+					<onleft>9000</onleft>
+					<onright>9002</onright>
+					<onup>123</onup>
+					<ondown>125</ondown>
+                    <visible>IsEmpty(Container.Property(game.paused))</visible>
+				</control>
+				<control type="button" id="125">
+					<description>hi-Scores button</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>High Scores</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>121</onup>
+					<ondown>124</ondown>
+				</control>
+				<control type="button" id="124">
+					<description>game infos button</description>
+					<posx>0</posx>
+					<posy>80</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>In Game</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>125</onup>
+					<ondown>122</ondown>
+					<visible>false</visible>
+				</control>
+				<control type="button" id="122">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>80</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Level Editor</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>124</onup>
+					<ondown>126</ondown>
+				</control>
+				<control type="button" id="126">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>120</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>10004</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>122</onup>
+					<ondown>127</ondown>
+				</control>
+				<control type="button" id="127">
+					<description>button</description>
+					<posx>0</posx>
+					<posy>160</posy>
+					<height>40</height>
+					<width>280</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>235</textwidth>
+					<aligny>center</aligny>
+					<font>font13caps</font>
+					<texturefocus border="5">arkanoid-button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<label>Infos</label>
+					<onleft>9000</onleft>
+					<onright>9000</onright>
+					<onup>126</onup>
+					<ondown>123</ondown>
+				</control>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>190</width>
+				<height>35</height>
+				<texture border="0,0,32,0">arkanoid-header.png</texture>
+			</control>
+			<control type="label">
+				<posx>160</posx>
+				<posy>0</posy>
+				<width>1000</width>
+				<height>28</height>
+				<font>font12caps</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>Arkanoid</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>20</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-270,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-270,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>80</width>
+				<height>35</height>
+				<texture border="0,0,32,0">arkanoid-header.png</texture>
+			</control>
+			<control type="button" id="320">
+				<description>close button (mouse only)</description>
+				<hitrect x="0" y="0" w="60" h="30" />
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>25</width>
+				<height>20</height>
+				<texturenofocus>arkanoid-HomeIcon.png</texturenofocus>
+				<texturefocus>arkanoid-HomeIcon-Focus.png</texturefocus>
+				<label>-</label>
+			</control>
+		</control>
+
+		<control type="group">
+			<posx>160r</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+			<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
+			<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(Home.xml) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
+			<control type="image">
+				<description>time background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">arkanoid-header.png</texture>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>FFFFFFFF</textcolor>
+				<label>$INFO[System.Time]</label>
+			</control>
+		</control>
+	</controls>
+</window>

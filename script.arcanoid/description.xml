@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addoninfo>
+  <!-- (required) guuid: unique identifier of this addon
+  guuids can be generated online at sites such as http://www.famkruithof.net/uuid/uuidgen -->
+  <guid>39d79541-190b-4d92-be49-2737c619677d</guid>
+
+  <!-- (required) type:
+  1:  visualization
+  2:  skin
+  3:  pvrdll
+  4:  script
+  5:  scraper
+  6:  screensaver
+  7:  plugin-pvr
+  8:  plugin-video
+  9:  plugin-music
+  10: plugin-program
+  11: plugin-pictures
+  12: plugin-weather -->
+  <type>4</type>
+
+  <!-- (required) Title -->
+  <title>Arkanoid</title>
+
+  <!-- (required) Major.minor.build -->
+  <version>1.0.0</version>
+
+  <!-- (required) author name & email. at least one author name is required -->
+  <authors>
+    <author name="Frost" email="frostbox360@gmail.com" site="passion-xbmc.org" />
+  </authors>
+
+  <!-- (required) Short description of addon. -->
+  <summary>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables</summary>
+
+  <!-- Longer description of addon. Usage instructions should go here if required. -->
+  <description>Replica of the famous game Arkanoid (1986) and Tournament Arkanoid (1987) ported on XBMC with a few variables
+
+[B]Includes 4 playing mode:[/B]
+ - Classic Mode &#45;&#62; Arkanoid (1986) 32 Level, no boss "Doh" level in future
+ - Tournament Mode &#45;&#62; Tournament Arkanoid (1987) 32 Level, no boss "Doh" level in future
+ - Mode Custom Level &#45;&#62; Playing with staff levels
+ - Practice Mode &#45;&#62; Play a particular level of Arkanoid (1986) or Tournament Arkanoid (1987)
+
+Includes a level editor, either to a full level or for edit an original level
+
+Management scores not completed on this Alpha
+
+Known bugs should be corrected on the next release.
+ - The ball can sometimes passed through a indestructible block "Gold" and stuck the other side.
+   the only solution for now is to leave the script and start again
+
+ - Again the ball sometimes it is bounded and turn around but the angle changes slowly and it feels it is taken,
+   then the only solution for the impatient like me , is out of the script and start again
+
+[B]Controls support:
+PC:[/B]
+ - [B]MOUSE:[/B]
+   - Move Left/Right for control vaus
+   - Left button = launch ball or fire
+   - Right button = Pause Game
+
+ - [B]KEYBOARD[/B]
+   - Arrows Left &#60;&#45;
+   - Arrows Right &#45;&#62;
+   - Enter for launch ball or fire
+   - C or Menu KEY for pause game
+
+[B]XBOX:[/B]
+ - [B]KEYBOARD/MOUSE:[/B]
+   - Same as PC
+
+ - [B]D-PAD:[/B]
+   - A = Select/launch ball/Fire
+   - Left &#60;&#45;
+   - Right &#45;&#62;
+   - Trigger Left/Right for control vaus
+   - White = pause game
+
+
+[B]Support/Help:[/B]
+ - [B]French:[/B] http://passion-xbmc.org/jeuxgames-pour-xbmc/arkanoid-pre1-0-alpha/
+ - [B]English:[/B] http://forum.xbmc.org/showthread.php?t=70978</description>
+
+  <!-- user defined tags e.g. <tags><tag>Example</tag></tags> -->
+  <tags>
+    <tag>Arcade</tag>
+    <tag>Game</tag>
+    <tag>Games</tag>
+    <tag>Jeu</tag>
+    <tag>Jeux</tag>
+    <tag>passion-xbmc</tag>
+    <tag>Frost</tag>
+  </tags>
+
+  <!-- minimum revision of xbmc your addon will run on. Leave blank all for revisions -->
+  <minrevision>26018</minrevision> <!-- http://xbmc.svn.sourceforge.net/viewvc/xbmc/tags/9.11_Camelot/ -->
+
+  <!-- patforms compatible with your addon. xbox, osx, windows, linux, or all -->
+  <platforms>
+    <platform>All</platform>
+  </platforms>
+
+  <!-- list any dependancies (such as another addon, your addon may have. minversion and maxversion are optional -->
+  <dependencies>
+    <dependency minversion="" maxversion=""></dependency>
+  </dependencies>
+
+  <!-- (optional) Whatever is put in disclaimer will be shown before download in an ok/cancel dialog.
+  Keep it short and to the point. -->
+  <disclaimer></disclaimer>
+
+  <!-- (optional) The License the addon is released under. -->
+  <license>GPL</license>
+</addoninfo>
