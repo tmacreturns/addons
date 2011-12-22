@@ -15,9 +15,10 @@
     <description lang="en">Twitter add-on developed by Sitecom to bring your personal contacts, pictures and news feed to your TV.</description>
   </extension>
 </addon>
+
 <addon id="script.gmail.checker"
        name="Gmail Checker"
-       version="2.1.1"
+       version="2.2.1"
        provider-name="Amet">
   <requires>
     <import addon="xbmc.python" version="2.0"/>
@@ -25,9 +26,9 @@
   <extension point="xbmc.python.script"
              library="default.py" />
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">Gmail Checker Sitecom</summary>
-    <summary lang="hu">Gmail ellenörző Sitecom</summary>
-    <description lang="en">View Gmail e-mails thanks to Sitecom</description>
+    <summary lang="en">Gmail Checker</summary>
+    <summary lang="hu">Gmail ellenörző</summary>
+    <description lang="en">View Gmail e-mails</description>
     <description lang="hu">Gmail leveleid olvasása</description>
     <platform>all</platform>
   </extension>
